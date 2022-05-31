@@ -1,37 +1,61 @@
 
 //返回一个函数 app传入直接可以调用
-const Category = require("../../models/Categroy");
+// const Category = require("../../models/Categroy");
 module.exports = app => {
 
   const express = require('express')
-  const router = express.Router()
-  const Category = require('../../models/Categroy')
-  router.post('/categories',async (req,res) => {
-    const model = await Category.create(req.body)
+  const router = express.Router({
+    mergeParams: true  //合并路由参数
+  })
+  // const Category = require('../../models/Categroy')
+
+  router.post('/',async (req,res) => {
+    const model = await req.Model.create(req.body)
     res.send(model)
   })
 
-  router.put('/categories/:id',async (req,res) => {
-    const model = await Category.findOneAndUpdate(req.params.id,req.body)
+  router.put('/:id',async (req,res) => {
+    // return res.send(req.body)
+
+    const model = await req.Model.findByIdAndUpdate(req.params.id,req.body)
     res.send(model)
   })
 
-  router.delete('/categories/:id',async (req,res) => {
-    const model = await Category.findOneAndDelete(req.params.id,req.body)
+  router.delete('/:id',async (req,res) => {
+    const model = await req.Model.findOneAndDelete(req.params.id,req.body)
     res.send({
       success: true
     })
   })
 
-  router.get('/categories',async (req,res) => {
-    const items = await Category.find().populate('parent').limit(10)
+  router.get('/',async (req,res) => {
+    const queryOptions = {}
+    if(req.Model.modelName === 'Category') {
+      queryOptions.populate = 'parent'
+    }
+    const items = await req.Model.find().setOptions(queryOptions).limit(10)
     res.send(items)
   })
 
-  router.get('/categories/:id',async (req,res) => {
-    const model = await Category.findById(req.params.id)
+  router.get('/:id',async (req,res) => {
+    const model = await req.Model.findById(req.params.id)
     res.send(model)
   })
 
-  app.use('/admin/api',router)
+  app.use('/admin/api/rest/:resource',async (req,res,next) => {
+
+    const modelName = require('inflection').classify(req.params.resource)   
+    req.Model = require(`../../models/${modelName}`)
+    next()
+  },router)
+
+
+  const multer = require('multer')
+  const upload = multer({dest: __dirname + '/../../uploads'})
+  app.post('/admin/api/upload',upload.single('file'), async(req,res) => {
+    const file = req.file
+    file.url = `http://localhost:3000/uploads/${file.filename}`
+    res.send(file)
+  })
+
 }

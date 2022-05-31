@@ -8,7 +8,7 @@
               v-for="item in parents"
               :key="item._id"
               :label="item.name"
-          :value="item._id">
+              :value="item._id">
           </el-option>
         </el-select>
       </el-form-item>
@@ -39,10 +39,12 @@ export default {
     async save() {
 
       if( this.id ) {
-        await this.$http.put(`categories/${this.id}`,this.model)
-      } else {
-        await this.$http.post('categories',this.model)
+        console.log(this.model)
 
+
+        await this.$http.put(`rest/categories/${this.id}`,this.model)
+      } else {
+        await this.$http.post('rest/categories',this.model)
       }
 
       await this.$router.push('/categories/list')
@@ -53,11 +55,12 @@ export default {
 
     },
     async fetch() {
-      const res = await this.$http.get(`categories/${this.id}`)
+      const res = await this.$http.get(`rest/categories/${this.id}`)
       this.model = res.data
+      console.log(res.data)
     },
     async fetchParents() {
-      const res = await this.$http.get(`categories`)
+      const res = await this.$http.get(`rest/categories`)
       this.parents = res.data
     }
   },
