@@ -10,11 +10,28 @@ import http from "./http"
 
 import router from "@/router";
 
+
+
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 
 Vue.prototype.$http = http
 Vue.config.productionTip = false
+
+Vue.mixin({
+  computed: {
+    uplaodUrl() {
+      return this.$http.defaults.baseURL + '/upload'
+    }
+  },
+  methods: {
+    getAuthHeaders() {
+      return {
+        Authorization: `Bearer ${localStorage.token || ''}`
+      }
+    }
+  }
+})
 
 new Vue({
   router,

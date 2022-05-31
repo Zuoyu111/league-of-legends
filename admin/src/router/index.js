@@ -16,9 +16,15 @@ import ArticleEdit from "@/pages/ArticleEdit";
 import AdList from "@/pages/AdList";
 import AdEdit from "@/pages/AdEdit";
 
+import AdminUserList from "@/pages/AdminUserList";
+import AdminUserEdit from "@/pages/AdminUserEdit";
+
+import Login from "@/pages/Login";
+
 
 const router = new VueRouter({
   routes: [
+    { path: '/login',name: 'login', component: Login,meta: { isPublic: true }},
     {
       path: "/",
       name: "home",
@@ -101,10 +107,31 @@ const router = new VueRouter({
           component: AdList,
         },
 
+        //管理员管理相关路由        
+        {
+          path: "/admin_users/create",
+          component: AdminUserEdit,
+        },
+        {
+          path: "/admin_users/edit/:id",
+          component: AdminUserEdit,
+          props: true,
+        },
+        {
+          path: "/admin_users/list",
+          component: AdminUserList,
+        },
 
       ],
     },
   ],
 });
+
+router.beforeEach((to,from,next) => {
+  if(!to.meta.isPublic && !localStorage.token ) {
+    return next('/login')
+  }
+  next()
+})
 
 export default router;
