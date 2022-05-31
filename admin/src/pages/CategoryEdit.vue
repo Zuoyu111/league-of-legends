@@ -40,8 +40,6 @@ export default {
 
       if( this.id ) {
         console.log(this.model)
-
-
         await this.$http.put(`rest/categories/${this.id}`,this.model)
       } else {
         await this.$http.post('rest/categories',this.model)
@@ -57,11 +55,12 @@ export default {
     async fetch() {
       const res = await this.$http.get(`rest/categories/${this.id}`)
       this.model = res.data
-      console.log(res.data)
+      console.log(res.data,898989)
     },
     async fetchParents() {
       const res = await this.$http.get(`rest/categories`)
       this.parents = res.data
+      console.log(res,888)
     }
   },
   created() {

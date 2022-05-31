@@ -10,6 +10,13 @@ import ItemList from "@/pages/ItemList";
 import HeroEdit from "@/pages/HeroEdit";
 import HeroList from "@/pages/HeroList";
 
+import ArticleList from "@/pages/ArticleList";
+import ArticleEdit from "@/pages/ArticleEdit";
+
+import AdList from "@/pages/AdList";
+import AdEdit from "@/pages/AdEdit";
+
+
 const router = new VueRouter({
   routes: [
     {
@@ -17,6 +24,8 @@ const router = new VueRouter({
       name: "home",
       component: HomeView,
       children: [
+
+        //分类管理相关路由
         {
           path: "/categories/create",
           component: CategoryEdit,
@@ -31,6 +40,7 @@ const router = new VueRouter({
           component: CategoryList,
         },
 
+        //装备管理相关路由
         {
           path: "/items/create",
           component: ItemEdit,
@@ -45,6 +55,8 @@ const router = new VueRouter({
           component: ItemList,
         },
 
+
+        //英雄管理相关路由
         {
           path: "/heroes/create",
           component: HeroEdit,
@@ -57,7 +69,38 @@ const router = new VueRouter({
         {
           path: "/heroes/list",
           component: HeroList,
-        }, 
+        },
+
+        //文章管理相关路由
+        {
+          path: "/articles/create",
+          component: ArticleEdit,
+        },
+        {
+          path: "/articles/edit/:id",
+          component: ArticleEdit,
+          props: true,
+        },
+        {
+          path: "/articles/list",
+          component: ArticleList,
+        },
+
+        //广告位管理相关路由
+        {
+          path: "/ads/create",
+          component: AdEdit,
+        },
+        {
+          path: "/ads/edit/:id",
+          component: AdEdit,
+          props: true,
+        },
+        {
+          path: "/ads/list",
+          component: AdList,
+        },
+
 
       ],
     },
