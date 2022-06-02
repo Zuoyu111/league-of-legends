@@ -1,0 +1,27 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 3443903 */
+  src: url('iconfont.woff2?t=1654068384477') format('woff2'),
+       url('iconfont.woff?t=1654068384477') format('woff'),
+       url('iconfont.ttf?t=1654068384477') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-menu:before {
+  content: "\e647";
+}
+
+.icon-card-hero:before {
+  content: "\e61f";
+}
+
+.icon-shipin:before {
+  content: "\e6a8";
+}
+

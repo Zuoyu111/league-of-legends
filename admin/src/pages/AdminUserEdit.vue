@@ -57,7 +57,7 @@ export default {
     this.id && this.fetch()
   },
   mounted() {
-    if(this.id) this.model = {}
+    // if(this.id) this.model = {}
   },
   watch: {
     id(value) {

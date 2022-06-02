@@ -1,4 +1,5 @@
 import VueRouter from "vue-router";
+
 import HomeView from "@/pages/HomeView";
 
 import CategoryEdit from "@/pages/CategoryEdit";
@@ -23,6 +24,7 @@ import Login from "@/pages/Login";
 
 
 const router = new VueRouter({
+  
   routes: [
     { path: '/login',name: 'login', component: Login,meta: { isPublic: true }},
     {
