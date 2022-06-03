@@ -11,7 +11,7 @@ module.exports = app => {
 
   router.get('/news/init',async(req,res) => {
     const parent = await Category.findOne().where({
-      name: '资讯'
+      name: '资讯分类'
     })
 
 
@@ -33,6 +33,64 @@ module.exports = app => {
     res.send(newsList)
   })
 
+
+
+
+  router.get('/news/list',async(req,res) => {
+
+
+    //关联查询
+    // const parent = await Category.findOne({
+    //   name: '资讯分类'
+    // }).populate({
+    //   path: 'children',
+    //   populate: {
+    //     path: 'newsList'
+    //   }
+    // }).lean()
+
+    //聚合查询
+    const parent = await Category.findOne({
+      name: '资讯分类'
+    })
+
+    const cats = await  Category.aggregate([
+      { $match: { parent: parent._id } }, // => 类似where查询
+      {
+        $lookup: { // => join连接查询
+          from: 'articles',  // 关联表|集合
+          localField: '_id',  //本地键
+          foreignField: 'categories', //外键
+          as: 'newsList' //
+        }
+      },
+      {
+        // 添加一个字段 =》 在这里是修改字段newsList返回5个item
+        $addFields: {
+          newsList: { $slice: ['$newsList', 5] }
+        }
+      }
+    ])
+
+    const subCats = cats.map(v => v._id)
+    cats.unshift({
+      name: '热门',
+      newsList: await Article.find().where({
+        categories: { $in: subCats }
+      }).populate('categories').limit(5).lean()
+    })
+
+    cats.map(cat => {
+      cat.newsList.map(news => {
+        news.categoryName = (cat.name === '热门')
+          ? news.categories[0].name : cat.name
+        return news
+      })
+      return cat
+    })
+
+    res.send(cats)
+  })
 
 
   app.use('/web/api',router)

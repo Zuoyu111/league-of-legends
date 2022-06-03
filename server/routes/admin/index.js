@@ -23,7 +23,7 @@ module.exports = app => {
 
   //修改资源
   router.put('/:id',async (req,res) => {
-    // return res.send(req.body)
+
 
     const model = await req.Model.findByIdAndUpdate(req.params.id,req.body)
     res.send(model)

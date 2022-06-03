@@ -172,6 +172,20 @@ a {
   height: 100%;
 }
 
+// text overflow
+
+.line-1 {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+
+
+
+
 //sprite
 .sprite {
   background: url("../assets/image/index.png") no-repeat 0 0;

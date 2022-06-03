@@ -32,44 +32,38 @@
 
     <list-card icon="menu" title="新闻资讯" :categories="newsCats">
       <template #items="{category}">
-        <div class="py-2" v-for="items in category.newsList">
+        <div class="py-2 fs-lg d-flex" v-for="items in category.newsList" :key="items.name">
 
-          <span>[{{items.categoryName}}]</span>
-          <span>|</span>
-          <span>{{items.title}}</span>
-          <span>{{items.date}}</span>
+          <span class="text-dot">[{{items.categoryName}}]</span>
+          <span class="mx-2">|</span>
+          <span class="flex-1 text-dark-1 line-1 pr-2">{{items.title}}</span>
+          <span class="text-grey fs-sm">{{items.createdAt | date}}</span>
         </div>
       </template>
 
     </list-card>
 
 
-    <p>sfs</p>
-    <p>sfs</p>
-    <p>sfs</p>
-    <p>sfs</p>
-    <p>sfs</p>
-    <p>sfs</p>
-    <p>sfs</p>
-    <p>sfs</p>
-    <p>sfs</p>
-    <p>sfs</p>
-    <p>sfs</p>
-    <p>sfs</p>
-    <p>sfs</p>
-    <p>sfs</p>
-
   </div>
 </template>
 
 <script>
+import dayjs from 'dayjs'
+
 import MCard from "@/components/Card";
 import ListCard from "@/components/ListCard";
+
+
 export default {
   name: "Home",
   components: {
     MCard,
     ListCard
+  },
+  filters: {
+    date( val ) {
+      return dayjs(val).format("MM/DD")
+    }
   },
   data() {
     return {
@@ -85,58 +79,17 @@ export default {
         }
         // Some Swiper option/callback...
       },
-      newsCats: [
-        {
-          name: '热门',
-          newsList: new Array(5).fill({}).map(v => (
-              {
-                categoryName: '公告',
-                title: '三街工作室|共创装备即将上线体验服！',
-                date: '06/01'
-              }
-          ))
-        },
-        {
-          name: '新闻',
-          newsList: new Array(5).fill({}).map(v => (
-              {
-                categoryName: '公告',
-                title: '三街工作室|共创装备即将上线体验服！',
-                date: '06/01'
-              }
-          ))
-        },
-        {
-          name: '公告',
-          newsList: new Array(5).fill({}).map(v => (
-              {
-                categoryName: '公告',
-                title: '三街工作室|共创装备即将上线体验服！',
-                date: '06/01'
-              }
-          ))
-        },
-        {
-          name: '公告',
-          newsList: new Array(5).fill({}).map(v => (
-              {
-                categoryName: '公告',
-                title: '三街工作室|共创装备即将上线体验服！',
-                date: '06/01'
-              }
-          ))
-        },
-        {
-          name: '公告',
-          newsList: new Array(5).fill({}).map(v => (
-              {
-                categoryName: '公告',
-                title: '三街工作室|共创装备即将上线体验服！',
-                date: '06/01'
-              }
-          ))
-        },
-      ]
+      newsCats: []
+    }
+  },
+  created() {
+    this.fetchNewsCats()
+  },
+  methods: {
+    async fetchNewsCats() {
+      const res = await this.$http('news/list')
+      console.log(res);
+      this.newsCats = res.data
     }
   }
 }

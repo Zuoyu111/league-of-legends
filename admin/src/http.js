@@ -22,12 +22,13 @@ http.interceptors.response.use(res => {
 }, err => {
   
   if( err.response.data.message ) {
+    console.log(err.response.data.message,666)
     Vue.prototype.$message({
       type: 'error',
       message: err.response.data.message
     })
 
-    if(err.response.status == 401) {
+    if(err.response.status === 401) {
       router.push('/login')
     }
   }

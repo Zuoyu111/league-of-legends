@@ -1,8 +1,8 @@
 <template>
   <m-card :title="title" :icon="icon">
     <div class="nav jc-between">
-      <div class="nav-item" v-for="(item,index) in categories" :class="{active : active === index}">
-        <div @click="active = index" class="nav-link">
+      <div class="nav-item" v-for="(item,index) in categories" :class="{active : active === index}" :key="index">
+        <div @click="$refs.home_swiper.$swiper.slideTo(index)" class="nav-link">
           {{ item.name }}
         </div>
       </div>
@@ -10,8 +10,9 @@
     </div>
 
     <div class="pt-3">
-      <swiper>
-        <swiper-slide v-for="category in categories">
+      <swiper ref="home_swiper" 
+      @slide-change="() => {active = $refs.home_swiper.$swiper.activeIndex}">
+        <swiper-slide v-for="category in categories" :key="category.name">
           <slot name="items" :category="category"></slot>
         </swiper-slide>
       </swiper>
