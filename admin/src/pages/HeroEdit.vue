@@ -2,7 +2,7 @@
   <div>
     <h2>{{ id ? "编辑" : "新建" }}英雄</h2>
     <el-form label-width="120px" @submit.native.prevent="save">
-      <el-tabs type="border-card" value="skills">
+      <el-tabs type="border-card" value="basic">
         <el-tab-pane label="基本信息" name="basic">
           <el-form-item label="名称">
             <el-input v-model="model.name"></el-input>
@@ -17,6 +17,19 @@
                 :on-success="afterUpload"
             >
               <img v-if="model.avatar" :src="model.avatar" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+
+          <el-form-item label="背景图">
+            <el-upload
+                class="avatar-uploader"
+                accept="image/*"
+                :action="$http.defaults.baseURL + '/upload'"
+                :show-file-list="false"
+                :on-success="res => $set(model,'background_img',res.url)"
+            >
+              <img v-if="model.background_img" :src="model.background_img" class="avatar" />
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
@@ -56,7 +69,7 @@
             <el-rate
                 style="margin-top: 0.6rem"
                 :max="9"
-                v-model="model.scores.acctack"
+                v-model="model.scores.attack"
             ></el-rate>
           </el-form-item>
 
@@ -103,6 +116,8 @@
           </el-form-item>
         </el-tab-pane>
 
+
+
         <el-tab-pane label="技能" name="skills">
           <el-button @click="model.skills.push({})" size="small"> <i class="el-icon-plus"></i> 添加技能</el-button>
           <el-row type="flex" style="flex-wrap: wrap">
@@ -110,12 +125,21 @@
               <el-form-item label="名称">
                 <el-input v-model="item.name"></el-input>
               </el-form-item>
+
+              <el-form-item label="冷却值">
+                <el-input v-model="item.cdTime"></el-input>
+              </el-form-item>
+
+              <el-form-item label="消耗">
+                <el-input v-model="item.cost"></el-input>
+              </el-form-item>
+
               <el-form-item label="图标">
                 <el-upload
                     class="avatar-uploader"
                     accept="image/*"
                     :action="uplaodUrl"
-                    :headers="getAuthHeaders()" 
+                    :headers="getAuthHeaders()"
                     :show-file-list="false"
                     :on-success="res => $set(item,'icon',res.url)"
                 >
@@ -138,6 +162,37 @@
           </el-row>
         </el-tab-pane>
 
+        <el-tab-pane label="最佳搭档" name="partners">
+          <el-button @click="model.partners.push({})" size="small"> <i class="el-icon-plus"></i> 添加搭档</el-button>
+          <el-row type="flex" style="flex-wrap: wrap">
+            <el-col :md="12"  v-for="(item,index) in model.partners" :key="index">
+
+              <el-form-item label="名称">
+                <el-select filterable v-model="item.hero">
+                  <el-option
+                      v-for="hero in heroes"
+                      :key="hero._id"
+                      :value="hero._id"
+                      :label="hero.name"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+
+              <el-form-item label="描述">
+                <el-input v-model="item.desc" type="textarea"></el-input>
+              </el-form-item>
+
+
+              <el-form-item>
+                <el-button @click="model.partners.splice(index,1)" type="danger" size="small">删除</el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+
+
+
+
       </el-tabs>
 
 
@@ -157,12 +212,14 @@ export default {
       model: {
         name: "",
         avatar: "",
+        heroes: [],
         scores: {
           difficult: 0,
         },
         items1: [],
         items2: [],
         skills: [],
+        partners: [],
         usageTips: '',
         battleTips: '',
         teamTips: ''
@@ -200,6 +257,10 @@ export default {
       const res = await this.$http.get(`rest/items`);
       this.items = res.data;
     },
+    async fetchHeroes() {
+      const res = await this.$http.get(`rest/heroes`);
+      this.heroes = res.data;
+    },
     afterUpload(res) {
       console.log(res);
       this.$set(this.model, "avatar", res.url);
@@ -209,6 +270,7 @@ export default {
     this.id && this.fetch();
     this.fetchItems()
     this.fetchCategory();
+    this.fetchHeroes();
   },
 };
 </script>

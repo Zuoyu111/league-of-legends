@@ -21,23 +21,36 @@
         </div>
       </div>
       <div class="bg-light py-2 fs-sm ">
-        <i class="sprite sprite-arrow-up mr-1"></i>
-        <span>收起</span>
+        <i class="sprite sprite-arrow-up mr-1 sprite-arrow-up-reverse"></i>
+        <span >收起</span>
       </div>
     </div>
 
   <!--  end of icons-->
 
 
-
     <list-card icon="menu" title="新闻资讯" :categories="newsCats">
-      <template #items="{category}">
-        <div class="py-2 fs-lg d-flex" v-for="items in category.newsList" :key="items.name">
+      <template  #items="{category}">
+        <div @click="toArticleDetail(items._id)" class="py-2 fs-lg d-flex" v-for="items in category.newsList" :key="items.name">
 
           <span class="text-dot">[{{items.categoryName}}]</span>
           <span class="mx-2">|</span>
           <span class="flex-1 text-dark-1 line-1 pr-2">{{items.title}}</span>
           <span class="text-grey fs-sm">{{items.createdAt | date}}</span>
+        </div>
+      </template>
+
+    </list-card>
+    <!-- end of   新闻资讯-->
+    <list-card icon="card-hero" title="英雄列表" :categories="HeroCats">
+      <template #items="{category}">
+        <div class="d-flex flex-warp" style="margin: 0 -0.5rem">
+          <div @click="toHeroDetail(hero._id)" class="p-2 text-center"
+               style="width: 20%"
+               v-for="hero in category.heroList" :key="hero.name">
+            <img class="w-100" style="border-radius: 6px" :src="hero.avatar" alt="">
+            <div>{{ hero.name }}</div>
+          </div>
         </div>
       </template>
 
@@ -79,17 +92,33 @@ export default {
         }
         // Some Swiper option/callback...
       },
-      newsCats: []
+      newsCats: [],
+      HeroCats: [],
+
     }
   },
   created() {
     this.fetchNewsCats()
+    this.fetchHeroesCats()
   },
   methods: {
+    toArticleDetail(id) {
+      this.$router.push({
+        path: '/article/'+id
+      })
+    },
+    toHeroDetail(id) {
+      this.$router.push({
+        path: '/heroes/' + id
+      })
+    },
     async fetchNewsCats() {
       const res = await this.$http('news/list')
-      console.log(res);
       this.newsCats = res.data
+    },
+    async fetchHeroesCats() {
+      const res = await this.$http('hero/list')
+      this.HeroCats = res.data
     }
   }
 }
@@ -97,6 +126,10 @@ export default {
 
 <style  lang="scss">
 @import "../scss/variables";
+
+  .sprite-arrow-up-reverse {
+    transform: rotateX(180deg);
+  }
   .swiper-pagination {
     .swiper-pagination-bullet {
       opacity: 1;

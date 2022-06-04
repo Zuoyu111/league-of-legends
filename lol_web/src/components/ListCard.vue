@@ -10,7 +10,8 @@
     </div>
 
     <div class="pt-3">
-      <swiper ref="home_swiper" 
+      <swiper ref="home_swiper"
+              :options="{ autoHeight: true }"
       @slide-change="() => {active = $refs.home_swiper.$swiper.activeIndex}">
         <swiper-slide v-for="category in categories" :key="category.name">
           <slot name="items" :category="category"></slot>

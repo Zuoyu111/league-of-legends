@@ -21,6 +21,10 @@ a {
   color: #999;
 }
 
+p {
+  line-height: 1.5rem;
+}
+
 //colors
 
 
@@ -30,6 +34,14 @@ a {
   }
   .bg-#{$colorKey} {
     background-color: $color;
+  }
+}
+
+
+//borders
+@each $dir in (top, right, bottom, left) {
+  .border-#{$dir} {
+    border-#{$dir}: 1px solid $border-color;
   }
 }
 
@@ -48,6 +60,8 @@ a {
     font-size: $size * $base-font-size;
   }
 }
+
+
 
 // flex
 
