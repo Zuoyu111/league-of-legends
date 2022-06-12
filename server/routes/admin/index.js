@@ -62,13 +62,16 @@ module.exports = app => {
   })
 
 
-    //登录校验中间件
-    const authMiddleware = require('../../middleware/auth')
-    const resourceMiddleware = require('../../middleware/resource')
+  //登录校验中间件
+  const authMiddleware = require('../../middleware/auth')
+  //引入modele中间间 用来引入资源
+  const resourceMiddleware = require('../../middleware/resource')
 
+  //处理所有请求资源的接口 通过inflection获取modles名 再引入资源
   app.use('/admin/api/rest/:resource',authMiddleware(),resourceMiddleware(),router)
 
 
+  //引入multer中间件处理上传文件
   const multer = require('multer')
 
   const upload = multer({dest: __dirname + '/../../uploads'})
@@ -78,6 +81,7 @@ module.exports = app => {
     res.send(file)
   })
 
+  //登录接口
   app.post('/admin/api/login',async (req,res) => {
     const { username, password } = req.body
     // 1.根据用户名找用户

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+//英雄的schema
 const schema = new mongoose.Schema({
   name: { type: String },       //英雄名
   avatar: { type: String },     //英雄头像

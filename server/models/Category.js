@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
+//分类的schema
 const schema = new mongoose.Schema({
-  name: { type: String },
-  parent: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
+  name: { type: String },   //分类名
+  parent: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },   //父级分类 类型是本身
 });
-
 
 
 //虚拟字段（virtual）

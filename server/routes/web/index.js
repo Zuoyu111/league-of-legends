@@ -1,4 +1,5 @@
 const {raw} = require("express");
+const mongoose = require("mongoose");
 module.exports = app => {
   const router = require('express').Router()
 
@@ -10,6 +11,7 @@ module.exports = app => {
   const Article = mongoose.model('Article')
   const Category = mongoose.model('Category')
   const Hero = mongoose.model('Hero')
+  const Ad = mongoose.model('Ad')
 
 
   //导入新闻数据
@@ -40,6 +42,13 @@ module.exports = app => {
     res.send(newsList)
   })
 
+  //首页幻灯片
+  router.get('/home/swiper',async (req,res) => {
+    const swiper = await Ad.find().where({
+      name: '首页幻灯片'
+    }).limit(3).lean()
+    res.send(swiper)
+  })
 
 
   // 新闻列表
@@ -184,11 +193,6 @@ module.exports = app => {
 
     res.send(data)
   })
-
-
-
-
-
 
 
   app.use('/web/api',router)

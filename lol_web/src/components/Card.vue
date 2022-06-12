@@ -1,11 +1,11 @@
 <template>
   <div class="card p-3 mt-3 bg-white">
 
-    <div class="card-header d-flex pb-3">
+    <div class="card-header d-flex pb-3 px-1">
 
       <i class="iconfont" :class="`icon-${icon}`"></i>
       <div class="fs-xl flex-1 px-2 ai-center">{{ title }}</div>
-      <i class="iconfont icon-menu"></i>
+      <i class="iconfont icon-dot"></i>
     </div>
     <div class="card-body pt-3">
       <slot></slot>

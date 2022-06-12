@@ -2,25 +2,25 @@ import VueRouter from "vue-router";
 
 import HomeView from "@/pages/HomeView";
 
-import CategoryEdit from "@/pages/CategoryEdit";
-import CategoryList from "@/pages/CategoryList";
+import CategoryEdit from "@/pages/Category/CategoryEdit";
+import CategoryList from "@/pages/Category/CategoryList";
 
-import ItemEdit from "@/pages/ItemEdit";
-import ItemList from "@/pages/ItemList";
+import ItemEdit from "@/pages/Item/ItemEdit";
+import ItemList from "@/pages/Item/ItemList";
 
-import HeroEdit from "@/pages/HeroEdit";
-import HeroList from "@/pages/HeroList";
+import HeroEdit from "@/pages/Hero/HeroEdit";
+import HeroList from "@/pages/Hero/HeroList";
 
-import ArticleList from "@/pages/ArticleList";
-import ArticleEdit from "@/pages/ArticleEdit";
+import ArticleList from "@/pages/Article/ArticleList";
+import ArticleEdit from "@/pages/Article/ArticleEdit";
 
-import AdList from "@/pages/AdList";
-import AdEdit from "@/pages/AdEdit";
+import AdList from "@/pages/Advertise/AdList";
+import AdEdit from "@/pages/Advertise/AdEdit";
 
-import AdminUserList from "@/pages/AdminUserList";
-import AdminUserEdit from "@/pages/AdminUserEdit";
+import AdminUserList from "@/pages/User/AdminUserList";
+import AdminUserEdit from "@/pages/User/AdminUserEdit";
 
-import Login from "@/pages/Login";
+import Login from "@/pages/Login/Login";
 
 
 const router = new VueRouter({

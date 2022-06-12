@@ -138,7 +138,7 @@
                 <el-upload
                     class="avatar-uploader"
                     accept="image/*"
-                    :action="uplaodUrl"
+                    :action="uploadUrl"
                     :headers="getAuthHeaders()"
                     :show-file-list="false"
                     :on-success="res => $set(item,'icon',res.url)"

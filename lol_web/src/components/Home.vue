@@ -1,28 +1,62 @@
 <template>
   <div>
     <swiper  :options="swiperOptions">
-      <swiper-slide>
-        <img class="w-100" src="../assets/image/1.jpg" alt="">
+      <swiper-slide v-for="item in swiperData" :key="item._id">
+        <img class="w-100" :src="item.image" alt="">
       </swiper-slide>
-      <swiper-slide>
-        <img class="w-100" src="../assets/image/1.jpg" alt="">
-      </swiper-slide>
-      <swiper-slide>
-        <img class="w-100" src="../assets/image/1.jpg" alt="">
-      </swiper-slide>
+
       <div class="swiper-pagination pagination-home  text-right px-3 pb-1"  slot="pagination"></div>
     </swiper>
   <!--   end of swiper-->
     <div class="nav-icons bg-white mt-3 text-grey text-center  pt-3">
       <div class="d-flex flex-warp">
-        <div class="nav-item mb-3" v-for="item in 10">
+        <div class="nav-item mb-3">
           <i class="sprite sprite-news"></i>
-          <div class="py-2">爆料站</div>
+          <div class="py-2 fs-sm">爆料站</div>
         </div>
+        <div class="nav-item mb-3">
+          <i class="sprite sprite-story"></i>
+          <div class="py-2 fs-sm">故事站</div>
+        </div>
+        <div class="nav-item mb-3">
+          <i class="sprite sprite-store"></i>
+          <div class="py-2 fs-sm">周边商城</div>
+        </div>
+        <div class="nav-item mb-3">
+          <i class="sprite sprite-experience"></i>
+          <div class="py-2 fs-sm">体验服</div>
+        </div>
+
+
+       <template v-if="isShow">
+         <div class="nav-item mb-3">
+           <i class="sprite sprite-noob"></i>
+           <div class="py-2 fs-sm">新人专区</div>
+         </div>
+         <div class="nav-item mb-3">
+           <i class="sprite sprite-glory"></i>
+           <div class="py-2 fs-sm">荣耀·传承</div>
+         </div>
+         <div class="nav-item mb-3">
+           <i class="sprite sprite-community"></i>
+           <div class="py-2 fs-sm">王者社区</div>
+         </div>
+         <div class="nav-item mb-3">
+           <i class="sprite sprite-campsite"></i>
+           <div class="py-2 fs-sm">王者营地</div>
+         </div>
+       </template>
+
+
+
+
       </div>
       <div class="bg-light py-2 fs-sm ">
-        <i class="sprite sprite-arrow-up mr-1 sprite-arrow-up-reverse"></i>
-        <span >收起</span>
+        <i class="sprite sprite-arrow-up mr-1" :class="{'sprite-arrow-up-reverse':!isShow}"></i>
+        <span @click="isShow = !isShow">
+          <span v-show="!isShow">展开</span>
+          <span v-show="isShow">收起</span>
+        </span>
       </div>
     </div>
 
@@ -62,6 +96,7 @@
 
 <script>
 import dayjs from 'dayjs'
+import 'animate.css'
 
 import MCard from "@/components/Card";
 import ListCard from "@/components/ListCard";
@@ -94,28 +129,39 @@ export default {
       },
       newsCats: [],
       HeroCats: [],
-
+      swiperData: [],
+      isShow: false
     }
   },
   created() {
-    this.fetchNewsCats()
-    this.fetchHeroesCats()
+    this.fetchNewsCats()   //获取新闻分类数据
+    this.fetchHeroesCats()  //获取英雄分类数据
+    this.fetchSwiperData()  //获取首页轮播图
   },
   methods: {
+    //跳转至文章详情
     toArticleDetail(id) {
       this.$router.push({
         path: '/article/'+id
       })
     },
+    //跳转至英雄详情
     toHeroDetail(id) {
       this.$router.push({
         path: '/heroes/' + id
       })
     },
+    async fetchSwiperData() {
+      const res = await this.$http('home/swiper')
+      console.log(res.data,444)
+      this.swiperData = res.data[0].items
+    },
+    //获取新闻分类
     async fetchNewsCats() {
       const res = await this.$http('news/list')
       this.newsCats = res.data
     },
+    //获取英雄分类
     async fetchHeroesCats() {
       const res = await this.$http('hero/list')
       this.HeroCats = res.data
